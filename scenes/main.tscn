@@ -2,6 +2,18 @@
 
 [ext_resource type="PackedScene" uid="uid://c87yrsu1ly5y5" path="res://scenes/player.tscn" id="1_o5qli"]
 
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_g4v7s"]
+
 [node name="Node2D" type="Node2D" unique_id=174859623]
 
 [node name="player" parent="." unique_id=695067723 instance=ExtResource("1_o5qli")]
+position = Vector2(0, -8)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1984166102]
+
+[node name="ground" type="CollisionShape2D" parent="StaticBody2D" unique_id=1298755458]
+shape = SubResource("WorldBoundaryShape2D_g4v7s")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=452403267]
+position = Vector2(0, -24)
+zoom = Vector2(3, 3)
