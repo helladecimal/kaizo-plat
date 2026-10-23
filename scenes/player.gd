@@ -3,7 +3,7 @@ extends CharacterBody2D
 const walk_vel = 70.0
 const run_vel = 130.0
 const walk_accel = 10
-const run_accel = 8
+const run_accel = 6
 const jump_force = -220.0
 
 const ground_friction = 20
@@ -13,9 +13,9 @@ const g = 800
 enum states {Idle, Walk, Run, Jump, Fall}
 
 var currstate = states.Idle
-var canjump = false
 
 @onready var sprite = $sprite
+@onready var buffer = $buffer
 
 func sprite_process():
 	var direction := Input.get_axis("Left", "Right")
@@ -50,7 +50,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y += g * delta
 	
 	# Handle jump.
-	if Input.is_action_just_pressed("Jump") and is_on_floor():
+	if Input.is_action_pressed("Jump") and is_on_floor(): # bunnyhop, why not
 		velocity.y = jump_force
 		
 	if Input.is_action_just_released("Jump") and not is_on_floor() and velocity.y < 0:
@@ -59,7 +59,7 @@ func _physics_process(delta: float) -> void:
 	if velocity.y > 0 and not is_on_floor():
 		var nudge = Input.get_axis("Up", "Down")
 		
-		velocity.y += 5*(nudge)
+		velocity.y += 8*(nudge)
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.

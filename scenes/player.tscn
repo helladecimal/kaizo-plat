@@ -84,3 +84,7 @@ position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_g4v7s")
 animation = &"jump"
 autoplay = "idle"
+
+[node name="buffer" type="Timer" parent="." unique_id=1249444874]
+wait_time = 0.1
+one_shot = true
