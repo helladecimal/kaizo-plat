@@ -18,10 +18,6 @@ region = Rect2(0, 0, 16, 32)
 atlas = ExtResource("1_3vyb7")
 region = Rect2(16, 0, 16, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_tefeu"]
-atlas = ExtResource("1_3vyb7")
-region = Rect2(48, 0, 16, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_o6xl0"]
 atlas = ExtResource("1_3vyb7")
 region = Rect2(64, 0, 16, 32)
@@ -57,9 +53,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_tefeu")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_o6xl0")
 }],
 "loop": 0,
@@ -89,5 +82,5 @@ shape = SubResource("RectangleShape2D_g4v7s")
 texture_filter = 1
 position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_g4v7s")
-animation = &"run"
+animation = &"jump"
 autoplay = "idle"

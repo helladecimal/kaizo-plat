@@ -15,10 +15,31 @@ enum states {Idle, Walk, Run, Jump, Fall}
 var currstate = states.Idle
 var canjump = false
 
+@onready var sprite = $sprite
 
-func _process(delta: float) -> void:
+func sprite_process():
+	var direction := Input.get_axis("Left", "Right")
+	
+	if velocity.x == 0 and is_on_floor():
+		sprite.play("idle")
+	if velocity.x != 0 and is_on_floor():
+		sprite.play("run")
+		
+	if velocity.y < 0:
+		sprite.play("jump")
+	if velocity.y > 10 and not is_on_floor():
+		sprite.play("fall")	
+	
+	if direction == 0:
+		sprite.flip_h = sprite.flip_h
+	else:
+		sprite.flip_h = true if direction < 0 else false
+	# oh the horror ...
 	pass
 
+func _process(delta: float) -> void:
+	sprite_process()
+	pass
 
 func _physics_process(delta: float) -> void:
 	
