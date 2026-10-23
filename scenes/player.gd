@@ -1,52 +1,61 @@
 extends CharacterBody2D
 
-const WALK_SPEED = 70.0
-const RUN_SPEED = 130.0
-const JUMP_VELOCITY = -300.0
-const GRAVITY = Vector2(0, 800)
+const walk_vel = 70.0
+const run_vel = 130.0
+const jump_force = -220.0
+
+const ground_friction = 0.8
+const air_friction = 0.5
+const g = 800
 
 enum states {Idle, Walk, Run, Jump, Fall}
 
 var currstate = states.Idle
 var canjump = false
 
-func state_handle(velocity: Vector2):
-	var direction := Input.get_axis("Left", "Right")
-	if Input.is_action_just_pressed("Jump") and canjump:
-		currstate = states.Jump
-	
-	if direction != 0:
-		currstate = states.Run if Input.is_action_pressed("Run") else states.Walk
-	
-	if velocity.y < 0:
-		currstate = states.Fall
-		
-	if velocity.x == 0:
-		currstate = states.Idle
-
 
 func _process(delta: float) -> void:
 	pass
 
+
 func _physics_process(delta: float) -> void:
-	state_handle(velocity)
+	
+	currstate = states.Jump if velocity.y < 0 else states.Fall
+	
 	# Add the gravity.
-	if not is_on_floor():
-		velocity += GRAVITY * delta
+	if currstate == states.Fall or currstate == states.Jump:
+		velocity.y += g * delta
 	
 	# Handle jump.
-	if currstate == states.Jump:
-		velocity.y = JUMP_VELOCITY
-	if currstate == states.Jump and not is_on_floor():
-		velocity.y = move_toward(velocity.y, 0, 100)
+	if Input.is_action_just_pressed("Jump") and is_on_floor():
+		velocity.y = jump_force
+		
+	if Input.is_action_just_released("Jump") and not is_on_floor() and velocity.y < 0:
+		velocity.y /= 2
+		
+	if velocity.y > 0 and not is_on_floor():
+		var nudge = Input.get_axis("Up", "Down")
+		
+		velocity.y += 5*(nudge)
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
+	
 	var direction := Input.get_axis("Left", "Right")
 	
-	if direction:
-		velocity.x = direction * WALK_SPEED
+	if direction == 0:
+		currstate = states.Idle
 	else:
-		velocity.x = move_toward(velocity.x, 0, WALK_SPEED)
+		if Input.is_action_just_pressed("Run"):
+			currstate = states.Run
+		else:
+			currstate = states.Walk
+	
+	if direction:
+		velocity.x = direction * walk_vel
+	else:
+		velocity.x = move_toward(velocity.x, 0, walk_vel)
 
+	print(currstate)
+	print(velocity.y)
 	move_and_slide()
