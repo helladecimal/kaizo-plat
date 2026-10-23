@@ -2,10 +2,12 @@ extends CharacterBody2D
 
 const walk_vel = 70.0
 const run_vel = 130.0
+const walk_accel = 10
+const run_accel = 8
 const jump_force = -220.0
 
-const ground_friction = 0.8
-const air_friction = 0.5
+const ground_friction = 20
+const air_friction = 0
 const g = 800
 
 enum states {Idle, Walk, Run, Jump, Fall}
@@ -50,12 +52,14 @@ func _physics_process(delta: float) -> void:
 			currstate = states.Run
 		else:
 			currstate = states.Walk
-	
+			
+	var speed = run_vel if Input.is_action_pressed("Run") else walk_vel
+	var accel = run_accel if Input.is_action_pressed("Run") else walk_accel
 	if direction:
-		velocity.x = direction * walk_vel
+		velocity.x = move_toward(velocity.x,(direction * speed), accel)
 	else:
-		velocity.x = move_toward(velocity.x, 0, walk_vel)
+		velocity.x = move_toward(velocity.x, 0, accel) if is_on_floor() else move_toward(velocity.x, 0, air_friction)
 
 	print(currstate)
-	print(velocity.y)
+	print(velocity.x)
 	move_and_slide()
