@@ -85,6 +85,6 @@ sprite_frames = SubResource("SpriteFrames_g4v7s")
 animation = &"jump"
 autoplay = "idle"
 
-[node name="buffer" type="Timer" parent="." unique_id=1249444874]
+[node name="coyote" type="Timer" parent="." unique_id=1249444874]
 wait_time = 0.1
 one_shot = true

@@ -1,10 +1,10 @@
 extends CharacterBody2D
 
-const walk_vel = 70.0
-const run_vel = 130.0
-const walk_accel = 10
-const run_accel = 6
-const jump_force = -220.0
+const walk_vel = 90.0
+const run_vel = 170.0
+const walk_accel = 12
+const run_accel = 8
+const jump_force = -240.0
 
 const ground_friction = 20
 const air_friction = 0
@@ -15,7 +15,7 @@ enum states {Idle, Walk, Run, Jump, Fall}
 var currstate = states.Idle
 
 @onready var sprite = $sprite
-@onready var buffer = $buffer
+@onready var coyote = $coyote
 
 func sprite_process():
 	var direction := Input.get_axis("Left", "Right")
@@ -34,6 +34,7 @@ func sprite_process():
 		sprite.flip_h = sprite.flip_h
 	else:
 		sprite.flip_h = true if direction < 0 else false
+		
 	# oh the horror ...
 	pass
 
@@ -50,7 +51,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y += g * delta
 	
 	# Handle jump.
-	if Input.is_action_pressed("Jump") and is_on_floor(): # bunnyhop, why not
+	if Input.is_action_pressed("Jump") and (is_on_floor() or not coyote.is_stopped()): # bunnyhop, why not
 		velocity.y = jump_force
 		
 	if Input.is_action_just_released("Jump") and not is_on_floor() and velocity.y < 0:
@@ -74,13 +75,14 @@ func _physics_process(delta: float) -> void:
 		else:
 			currstate = states.Walk
 			
-	var speed = run_vel if Input.is_action_pressed("Run") else walk_vel
-	var accel = run_accel if Input.is_action_pressed("Run") else walk_accel
+	var speed = run_vel if Input.is_action_pressed("Run") or (not is_on_floor() and direction == 0) else walk_vel
+	var accel = run_accel if Input.is_action_pressed("Run") or (not is_on_floor() and direction == 0) else walk_accel
 	if direction:
 		velocity.x = move_toward(velocity.x,(direction * speed), accel)
 	else:
 		velocity.x = move_toward(velocity.x, 0, accel) if is_on_floor() else move_toward(velocity.x, 0, air_friction)
-
-	print(currstate)
-	print(velocity.x)
+	
+	var was_on_floor = is_on_floor()
 	move_and_slide()
+	if was_on_floor and not is_on_floor():
+		coyote.start()

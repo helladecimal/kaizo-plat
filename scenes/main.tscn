@@ -1,19 +1,36 @@
-[gd_scene format=3 uid="uid://d377i1lyx406o"]
+[gd_scene format=4 uid="uid://d377i1lyx406o"]
 
 [ext_resource type="PackedScene" uid="uid://c87yrsu1ly5y5" path="res://scenes/player.tscn" id="1_o5qli"]
+[ext_resource type="Texture2D" uid="uid://ds4ewavf87fsu" path="res://sprites/tiles.png" id="2_0wfyh"]
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_g4v7s"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sugp2"]
+texture = ExtResource("2_0wfyh")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_g4v7s"]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_sugp2")
 
 [node name="Node2D" type="Node2D" unique_id=174859623]
 
 [node name="player" parent="." unique_id=695067723 instance=ExtResource("1_o5qli")]
-position = Vector2(0, -8)
+position = Vector2(-64, 0)
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1984166102]
-
-[node name="ground" type="CollisionShape2D" parent="StaticBody2D" unique_id=1298755458]
-shape = SubResource("WorldBoundaryShape2D_g4v7s")
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=424075486]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAD//wAAAAAAAAAAAAAEAAAAAAAAAAAAAAD+/wAAAAAAAAAAAAD9/wAAAAAAAAAAAAD8/wAAAAAAAAAAAAD7/wAAAAABAAAAAAD7////AAAAAAAAAAAFAP//AAAAAAAAAAAFAAAAAAABAAAAAAD6////AAABAAAAAAD6/wAAAAABAAAAAAD6/wEAAAABAAAAAAD7/wEAAAABAAAAAAD8/wEAAAABAAAAAAD9/wEAAAABAAAAAAD+/wEAAAABAAAAAAD//wEAAAABAAAAAAAEAAEAAAABAAAAAAAFAAEAAAABAAAAAAD6//7/AAABAAAAAAD6//3/AAABAAAAAAD6//z/AAABAAAAAAD6//v/AAAAAAAAAAD6/wIAAAABAAAAAAD7/wIAAAABAAAAAAD8/wIAAAABAAAAAAD9/wIAAAABAAAAAAD+/wIAAAABAAAAAAD//wIAAAABAAAAAAAEAAIAAAABAAAAAAAFAAIAAAABAAAAAAAGAAIAAAABAAAAAAAHAAIAAAABAAAAAAAIAAIAAAABAAAAAAAJAAIAAAABAAAAAAAJAAEAAAABAAAAAAAIAAEAAAABAAAAAAAHAAEAAAABAAAAAAAGAAEAAAABAAAAAAAGAAAAAAABAAAAAAAHAAAAAAABAAAAAAAIAAAAAAABAAAAAAAJAAAAAAABAAAAAAAJAAMAAAABAAAAAAAIAAMAAAABAAAAAAAHAAMAAAABAAAAAAAGAAMAAAABAAAAAAAFAAMAAAABAAAAAAAEAAMAAAABAAAAAAD//wMAAAABAAAAAAD+/wMAAAABAAAAAAD9/wMAAAABAAAAAAD8/wMAAAABAAAAAAD7/wMAAAABAAAAAAD6/wMAAAABAAAAAAAGAP//AAABAAAAAAAHAP//AAABAAAAAAAIAP//AAABAAAAAAAJAP//AAAAAAAAAAAGAP7/AAAAAAAAAAAHAP7/AAAAAAAAAAAIAP7/AAAAAAAAAAA=")
+tile_set = SubResource("TileSet_g4v7s")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=452403267]
-position = Vector2(0, -24)
-zoom = Vector2(3, 3)
+position = Vector2(64, -64)
+zoom = Vector2(2, 2)
