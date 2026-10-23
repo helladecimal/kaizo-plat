@@ -16,13 +16,14 @@ var currstate = states.Idle
 
 @onready var sprite = $sprite
 @onready var coyote = $coyote
+@onready var hurtbox = $Hurtbox
 
 func sprite_process():
 	var direction := Input.get_axis("Left", "Right")
 	
-	if velocity.x == 0 and is_on_floor():
+	if velocity.x == 0 and direction == 0 and is_on_floor():
 		sprite.play("idle")
-	if velocity.x != 0 and is_on_floor():
+	if velocity.x != 0 and direction != 0 and is_on_floor():
 		sprite.play("run")
 		
 	if velocity.y < 0:

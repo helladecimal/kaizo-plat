@@ -71,6 +71,9 @@ animations = [{
 "speed": 7.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yf5fn"]
+size = Vector2(9, 25)
+
 [node name="player" type="CharacterBody2D" unique_id=695067723]
 script = ExtResource("1_g2els")
 
@@ -88,3 +91,12 @@ autoplay = "idle"
 [node name="coyote" type="Timer" parent="." unique_id=1249444874]
 wait_time = 0.1
 one_shot = true
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=724732293]
+position = Vector2(-0.5, -12.5)
+collision_layer = 2
+collision_mask = 2
+
+[node name="shape" type="CollisionShape2D" parent="Hurtbox" unique_id=903548151]
+shape = SubResource("RectangleShape2D_yf5fn")
+debug_color = Color(0.99215686, 0, 0, 0.41960785)
