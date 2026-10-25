@@ -1,10 +1,11 @@
 extends CharacterBody2D
+class_name Player
 
 const walk_vel = 90.0
 const run_vel = 170.0
 const walk_accel = 12
 const run_accel = 8
-const jump_force = -300.0
+const jump_force = -280.0
 
 const ground_friction = 20
 const air_friction = 0
@@ -29,7 +30,7 @@ func sprite_process():
 		
 	if velocity.y < 0:
 		sprite.play("jump")
-	if velocity.y > 10 and not is_on_floor():
+	if velocity.y > 0 and not is_on_floor():
 		sprite.play("fall")	
 	
 	if direction == 0:
@@ -86,9 +87,13 @@ func _physics_process(delta: float) -> void:
 	if direction:
 		velocity.x = move_toward(velocity.x,(direction * speed), accel)
 	else:
-		velocity.x = move_toward(velocity.x, 0, accel) if is_on_floor() else move_toward(velocity.x, 0, air_friction)
+		velocity.x = move_toward(velocity.x, 0, walk_accel) if is_on_floor() else move_toward(velocity.x, 0, air_friction)
 	
 	var was_on_floor = is_on_floor()
 	move_and_slide()
 	if was_on_floor and not is_on_floor() and buffer.is_stopped():
 		coyote.start()
+
+
+func _on_hurtbox_body_entered(body: Node2D) -> void:
+	print("hazard")
