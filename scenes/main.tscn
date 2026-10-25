@@ -39,12 +39,12 @@ distance = -128.0
 [node name="Node2D" type="Node2D" unique_id=174859623]
 
 [node name="Camera" type="Camera2D" parent="." unique_id=452403267]
-position = Vector2(-64, 0)
+position = Vector2(112, -64)
 zoom = Vector2(2, 2)
-limit_left = -192
-limit_top = -258
-limit_right = 672
-limit_bottom = 126
+limit_left = -190
+limit_top = -261
+limit_right = 674
+limit_bottom = 123
 position_smoothing_speed = 20.0
 drag_horizontal_enabled = true
 drag_horizontal_offset = -0.5
