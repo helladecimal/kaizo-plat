@@ -20,6 +20,8 @@ var currstate = states.Idle
 @onready var buffer = $buffer
 @onready var hurtbox = $Hurtbox
 
+var can_jump = true
+
 func sprite_process():
 	var direction := Input.get_axis("Left", "Right")
 	
@@ -58,8 +60,13 @@ func _physics_process(delta: float) -> void:
 		
 	
 	# Handle jump.
-	if not buffer.is_stopped() and (is_on_floor() or not coyote.is_stopped()):
+	if not buffer.is_stopped() and (is_on_floor() or not coyote.is_stopped()) and can_jump:
 		velocity.y = jump_force
+		print("jump")
+		can_jump = false
+	
+	if is_on_floor() and can_jump == false:
+		can_jump = true
 		
 	if Input.is_action_just_released("Jump") and not is_on_floor() and velocity.y < 0:
 		velocity.y /= 2
