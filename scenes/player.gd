@@ -4,7 +4,7 @@ const walk_vel = 90.0
 const run_vel = 170.0
 const walk_accel = 12
 const run_accel = 8
-const jump_force = -240.0
+const jump_force = -300.0
 
 const ground_friction = 20
 const air_friction = 0
@@ -16,6 +16,7 @@ var currstate = states.Idle
 
 @onready var sprite = $sprite
 @onready var coyote = $coyote
+@onready var buffer = $buffer
 @onready var hurtbox = $Hurtbox
 
 func sprite_process():
@@ -51,17 +52,21 @@ func _physics_process(delta: float) -> void:
 	if currstate == states.Fall or currstate == states.Jump:
 		velocity.y += g * delta
 	
+	if Input.is_action_just_pressed("Jump"):
+		buffer.start()
+		
+	
 	# Handle jump.
-	if Input.is_action_pressed("Jump") and (is_on_floor() or not coyote.is_stopped()): # bunnyhop, why not
+	if not buffer.is_stopped() and (is_on_floor() or not coyote.is_stopped()):
 		velocity.y = jump_force
 		
 	if Input.is_action_just_released("Jump") and not is_on_floor() and velocity.y < 0:
 		velocity.y /= 2
 		
 	if velocity.y > 0 and not is_on_floor():
-		var nudge = Input.get_axis("Up", "Down")
+		var nudge = float(Input.is_action_pressed("Jump"))
 		
-		velocity.y += 8*(nudge)
+		velocity.y -= 5*(nudge)
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -85,5 +90,5 @@ func _physics_process(delta: float) -> void:
 	
 	var was_on_floor = is_on_floor()
 	move_and_slide()
-	if was_on_floor and not is_on_floor():
+	if was_on_floor and not is_on_floor() and buffer.is_stopped():
 		coyote.start()
